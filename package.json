@@ -1,0 +1,19 @@
+{
+  "name": "aws-cdk-learning",
+  "version": "0.0.1",
+  "description": "learning repo for aws cdk",
+  "main": "index.js",
+  "author": "Nkowne63 <neutron63zf@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@types/node": "^14.14.6",
+    "aws-cdk": "^1.70.0",
+    "dotenv": "^8.2.0",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.5"
+  },
+  "scripts": {
+    "start": "ts-node index.ts"
+  }
+}
