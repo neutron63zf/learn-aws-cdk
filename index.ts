@@ -1,3 +1,4 @@
+import { } from 'aws-cdk'
+
 require('dotenv').config()
 
-console.log("Hello World!");
