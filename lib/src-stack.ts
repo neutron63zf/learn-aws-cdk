@@ -1,7 +1,8 @@
 import * as ec2 from '@aws-cdk/aws-ec2'
 import * as ecs from '@aws-cdk/aws-ecs'
-import * as ecs_patterns from '@aws-cdk/aws-ecs-patterns'
+import * as elb from '@aws-cdk/aws-elasticloadbalancingv2'
 import * as cdk from '@aws-cdk/core'
+import { resolve } from 'path'
 
 export class AdminStack extends cdk.Stack {
   constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
@@ -16,15 +17,39 @@ export class AdminStack extends cdk.Stack {
       clusterName: 'admin'
     })
 
-    // Create a load-balanced Fargate service and make it public
-    new ecs_patterns.ApplicationLoadBalancedFargateService(this, 'MyFargateService', {
-      serviceName: 'sample-service',
-      cluster: cluster,
-      cpu: 256,
-      desiredCount: 1,
-      taskImageOptions: { image: ecs.ContainerImage.fromRegistry('amazon/amazon-ecs-sample') },
+    const taskDefinition = new ecs.FargateTaskDefinition(this, 'TaskDef')
+
+    const container = taskDefinition.addContainer('DefaultContainer', {
+      image: ecs.ContainerImage.fromAsset(resolve('.')),
       memoryLimitMiB: 512,
-      publicLoadBalancer: true
+      cpu: 256
+    })
+
+    container.addPortMappings({
+      containerPort: 3000
+    })
+
+    const ecsService = new ecs.FargateService(this, 'Service', {
+      cluster,
+      taskDefinition,
+      desiredCount: 2
+    })
+
+    const lb = new elb.ApplicationLoadBalancer(this, 'LB', {
+      vpc: cluster.vpc,
+      internetFacing: true
+    })
+
+    const listener = lb.addListener('Listener', { port: 80 })
+
+    listener.addTargets('ECS', {
+      protocol: elb.ApplicationProtocol.HTTP,
+      port: 3000,
+      targets: [ecsService]
+    })
+
+    new cdk.CfnOutput(this, 'LoadBalancerDNS', {
+      value: lb.loadBalancerDnsName
     })
   }
 }

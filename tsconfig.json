@@ -21,7 +21,8 @@
     "baseUrl": "./",
     "paths": {
       "~/*": ["./*"]
-    }
+    },
+    "esModuleInterop": true
   },
   "exclude": ["cdk.out"]
 }
