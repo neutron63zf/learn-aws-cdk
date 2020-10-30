@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import * as cdk from '@aws-cdk/core'
-import { AdminStack } from '~/lib/src-stack'
+import { AccountStack, AdminStack } from '~/lib/src-stack'
 
 export const init = () => {
   const app = new cdk.App()
@@ -10,6 +10,9 @@ export const init = () => {
       region: process.env.CDK_DEFAULT_REGION
     }
   })
+}
 
-  // new AccountStack(app, 'sample')
+export const bootstrap = () => {
+  const app = new cdk.App()
+  new AccountStack(app, 'sample')
 }

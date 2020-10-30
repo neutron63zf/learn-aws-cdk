@@ -26,6 +26,7 @@
     "cdk": "cdk",
     "run-ts": "ts-node -r tsconfig-paths/register",
     "test": "jest",
-    "watch": "tsc -w"
+    "watch": "tsc -w",
+    "get-account-info": "mv cdk.json cdk.main.json && mv cdk.bootstrap.json cdk.json && yarn cdk deploy -y && yarn cdk destroy -y && mv cdk.json cdk.bootstrap.json && mv cdk.main.json cdk.json"
   }
 }
