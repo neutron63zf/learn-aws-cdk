@@ -5,9 +5,7 @@ import * as Src from '~/lib/src-stack'
 test('VPC created', () => {
   const app = new cdk.App()
   // WHEN
-  const stack = new Src.SrcStack(app, 'MyTestStack')
+  const stack = new Src.AdminStack(app, 'MyTestStack')
   // THEN
-  expectCDK(stack).to(
-    haveResource('AWS::EC2::VPC')
-  )
+  expectCDK(stack).to(haveResource('AWS::EC2::VPC'))
 })

@@ -12,3 +12,6 @@ cdk.out
 
 # env file
 .env
+
+# generated file
+cdk.context.json
